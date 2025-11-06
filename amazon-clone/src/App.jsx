@@ -1,8 +1,9 @@
 import "./App.css";
+import Header from "./Components/Header/Header";
 function App() {
   return (
     <>
-      <h1>Amazon-Clone</h1>
+      <Header />
     </>
   );
 }
