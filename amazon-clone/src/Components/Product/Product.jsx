@@ -13,6 +13,7 @@ function Product() {
       .catch((error) => console.log(error));
   }, []);
   return (
+    // fetching each single product and rendering using props
     <section className={classes.product__container}>
       {products &&
         products.map((singleProduct, i) => {
