@@ -12,7 +12,6 @@ function Product() {
       .then((resp) => setProduct(resp.data))
       .catch((error) => console.log(error));
   }, []);
-  // console.log(products);
   return (
     <section className={classes.product__container}>
       {products &&
