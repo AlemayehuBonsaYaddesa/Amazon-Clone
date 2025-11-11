@@ -8,7 +8,7 @@ function ProductCard({ product }) {
   //   console.log(product);
   return (
     <div className={`${classes.card__container}`}>
-      <Link to="">
+      <Link to={`/products/${product.id}`}>
         <img src={product.image} alt="no" />
       </Link>
       <div>
