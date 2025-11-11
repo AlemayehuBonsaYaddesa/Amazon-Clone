@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../../Components/Product/ProductCard";
 import { productUrl } from "../../API/endPoint";
+import Loader from "../../Components/Loader/Loader";
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -11,7 +12,9 @@ function ProductDetail() {
   useEffect(() => {
     axios
       .get(`${productUrl}/products/${productId}`)
-      .then((resp) => setDetail(resp.data))
+      .then((resp) => {
+        setDetail(resp.data);
+      })
       .catch((err) => console.log(err));
   }, [productId]);
 
@@ -31,7 +34,7 @@ function ProductDetail() {
             <ProductCard product={details} />
           </>
         ) : (
-          <p style={{ padding: "30px" }}>Loading...</p>
+          <Loader />
         )}
       </div>
     </Layout>
