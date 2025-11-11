@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../../Components/LayOut/Layout";
 
-function Orders() {
-  return <Layout>Orders</Layout>;
+function Cart() {
+  return <Layout>Cart</Layout>;
 }
 
-export default Orders;
+export default Cart;

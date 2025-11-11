@@ -1,7 +1,8 @@
 import React from "react";
+import Layout from "../../Components/LayOut/Layout";
 
 function Payment() {
-  return <div></div>;
+  return <Layout></Layout>;
 }
 
 export default Payment;
