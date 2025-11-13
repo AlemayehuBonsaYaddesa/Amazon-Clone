@@ -1,36 +1,57 @@
-import React from "react";
+import React, { useContext } from "react";
 import Rating from "@mui/material/Rating";
 import CurrencyFormat from "../Currency/CurrencyFormat";
 import classes from "./Product.module.css";
 import { Link } from "react-router-dom";
+import { DataContext } from "../DataProvider/DataProvider";
+import { Type } from "../../Utility/action.type";
 
 function ProductCard({ product, flex, renderDesc }) {
   //   console.log(product);
+  const { image, title, id, rating, price, description } = product;
+
+  const [state, dispatch] = useContext(DataContext);
+  // console.log(state);
+
+  const addToCart = () => {
+    dispatch({
+      type: Type.ADD_TO_BASKET,
+      item: {
+        image,
+        title,
+        id,
+        rating,
+        price,
+        description,
+      },
+    });
+  };
+
   return (
     <div
       className={`${classes.card__container} ${
         flex ? classes.product_flexed : ""
       }`}
     >
-      <Link to={`/products/${product.id}`}>
-        <img src={product.image} alt="no" />
+      <Link to={`/products/${id}`}>
+        <img src={image} alt="no" />
       </Link>
       <div>
-        <h3 style={{ maxWidth: "680px" }}>{product.title}</h3>
-        {renderDesc && (
-          <div style={{ maxWidth: "680px" }}>{product.description}</div>
-        )}
+        <h3 style={{ maxWidth: "680px" }}>{title}</h3>
+        {renderDesc && <div style={{ maxWidth: "680px" }}>{description}</div>}
         <div className={classes.rating}>
           {/* rating */}
-          <Rating value={product.rating.rate} precision={0.1} />
+          <Rating value={rating.rate} precision={0.1} />
           {/* Count */}
-          <small>{product.rating.count}</small>
+          <small>{rating.count}</small>
         </div>
         <div>
           {/* price */}
-          <CurrencyFormat amount={product.price} />
+          <CurrencyFormat amount={price} />
         </div>
-        <button className={classes.button}>add to cart</button>
+        <button className={classes.button} onClick={addToCart}>
+          add to cart
+        </button>
       </div>
     </div>
   );
