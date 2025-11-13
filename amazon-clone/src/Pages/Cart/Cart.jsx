@@ -5,7 +5,9 @@ import ProductCard from "../../Components/Product/ProductCard";
 import numeral from "numeral";
 import { Link } from "react-router-dom";
 import classes from "./Cart.module.css";
-
+import { Type } from "../../Utility/action.type";
+import { MdOutlineKeyboardArrowUp } from "react-icons/md";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 export default function Cart() {
   const [{ basket, user }, dispatch] = useContext(DataContext);
   const total = basket.reduce(
@@ -13,6 +15,18 @@ export default function Cart() {
     0
   );
 
+  const increment = (item) => {
+    dispatch({
+      type: Type.ADD_TO_BASKET,
+      item,
+    });
+  };
+  const decrement = (id) => {
+    dispatch({
+      type: Type.REMOVE_FROM_CART,
+      id,
+    });
+  };
   // console.log(basket);
   return (
     <LayOut>
@@ -27,13 +41,30 @@ export default function Cart() {
             basket &&
             basket.map((item, i) => {
               return (
-                <ProductCard
-                  product={item}
-                  renderDesc={true}
-                  flex={true}
-                  key={i}
-                  renderAdd={false}
-                />
+                <section className={classes.product_card}>
+                  <ProductCard
+                    product={item}
+                    renderDesc={true}
+                    flex={true}
+                    key={i}
+                    renderAdd={false}
+                  />
+                  <div className={classes.button_container}>
+                    <button
+                      className={classes.btn}
+                      onClick={() => increment(item)}
+                    >
+                      <MdOutlineKeyboardArrowUp size={20} />
+                    </button>
+                    <span>{item.amount}</span>
+                    <button
+                      className={classes.btn}
+                      onClick={() => decrement(item.id)}
+                    >
+                      <MdOutlineKeyboardArrowDown size={20} />
+                    </button>
+                  </div>
+                </section>
               );
             })
           )}
