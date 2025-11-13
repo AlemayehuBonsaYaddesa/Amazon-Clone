@@ -31,7 +31,12 @@ function ProductDetail() {
                 {details.category}
               </Link>
             </p>
-            <ProductCard product={details} flex={true} renderDesc={true} />
+            <ProductCard
+              product={details}
+              flex={true}
+              renderDesc={true}
+              renderAdd={true}
+            />
           </>
         ) : (
           <Loader />
