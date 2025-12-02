@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import classes from "./SignUp.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../Utility/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -8,14 +8,15 @@ import {
 } from "firebase/auth";
 import { DataContext } from "../../Components/DataProvider/DataProvider";
 import { Type } from "../../Utility/action.type";
-// import Layout from "../../Components/LayOut/Layout";
+import { ClipLoader } from "react-spinners";
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [{ user }, dispatch] = useContext(DataContext);
-  const [loading, setLoading] = useState({ signIn: false, signOut: false });
+  const [loading, setLoading] = useState({ signIn: false, signUp: false });
   // console.log(email, password);
+  const navigate = useNavigate();
 
   const authHandler = (e) => {
     e.preventDefault();
@@ -31,11 +32,15 @@ function Auth() {
             user: userinfo.user,
           });
           setLoading({ ...loading, signIn: false });
+          navigate("/");
         })
-        .catch((err) => setError(err.message));
+        .catch((err) => {
+          setError(err.message);
+          setLoading({ ...loading, signIn: false });
+        });
     } else {
       // signup logic
-      setLoading({ ...loading, signOut: true });
+      setLoading({ ...loading, signUp: true });
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((userinfo) => {
@@ -43,9 +48,13 @@ function Auth() {
             type: Type.SET_USER,
             user: userinfo.user,
           });
-          setLoading({ ...loading, signOut: false });
+          setLoading({ ...loading, signUp: false });
+          navigate("/");
         })
-        .catch((err) => setError(err.message));
+        .catch((err) => {
+          setError(err.message);
+          setLoading({ ...loading, signUp: false });
+        });
     }
   };
   // console.log(error);
@@ -79,7 +88,11 @@ function Auth() {
           />{" "}
           <br />
           <button type="submit" onClick={authHandler} name="signin">
-            Sign In
+            {loading.signIn ? (
+              <ClipLoader size={10} color={"#000000ff"} />
+            ) : (
+              " Sign In "
+            )}
           </button>
           <p>
             By signing-in you agree to the AMAZON FAKE CLONE Conditions of Use &
@@ -87,7 +100,11 @@ function Auth() {
             Interest-Based Ads Notice.
           </p>
           <button type="submit" onClick={authHandler} name="signup">
-            Create Account
+            {loading.signUp ? (
+              <ClipLoader size={10} color={"#000000ff"} />
+            ) : (
+              " Create Account "
+            )}
           </button>
           {error ? <small style={{ color: "red" }}>{error}</small> : ""}
         </form>
