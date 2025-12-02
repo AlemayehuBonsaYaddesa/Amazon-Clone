@@ -36,7 +36,9 @@ export default function Cart() {
           <h3>Your Shopping Basket</h3>
           <hr />
           {basket?.length == 0 ? (
-            <p>Ops You have no items in your cart.</p>
+            <p style={{ margin: "10px" }}>
+              Ops You have no items in your cart.
+            </p>
           ) : (
             basket &&
             basket.map((item, i) => {

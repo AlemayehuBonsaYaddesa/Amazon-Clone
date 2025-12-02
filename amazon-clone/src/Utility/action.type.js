@@ -1,6 +1,5 @@
 export const Type = {
     ADD_TO_BASKET: "ADD_TO_BASKET",
-    REMOVE_FROM_CART: "REMOVE_FROM_CART"
+    REMOVE_FROM_CART: "REMOVE_FROM_CART",
+    SET_USER: 'SET_USER'
 }
-// export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
-// export const RESET_CART = "RESET_CART";

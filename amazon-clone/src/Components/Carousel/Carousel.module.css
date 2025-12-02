@@ -1,6 +1,8 @@
 .hero__img {
   position: relative;
+  overflow: hidden; /* <<< THIS FIXES THE PROBLEM */
 }
+
 .hero__img::before {
   content: "";
   position: absolute;
@@ -12,4 +14,26 @@
     rgba(255, 255, 255, 0),
     rgba(255, 255, 255)
   );
+}
+/* remove all built-in backgrounds */
+:global(.carousel .slide) {
+  background: transparent !important;
+}
+
+:global(.carousel .carousel-slider) {
+  background: transparent !important;
+}
+
+:global(.carousel .control-arrow) {
+  background: transparent !important;
+}
+
+:global(.carousel .control-dots) {
+  background: transparent !important;
+}
+
+/* on hover, still transparent */
+:global(.carousel:hover .slide),
+:global(.carousel:hover .carousel-slider) {
+  background: transparent !important;
 }
