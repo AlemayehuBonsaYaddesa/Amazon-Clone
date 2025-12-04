@@ -8,9 +8,12 @@ import CurrencyFormat from "../../Components/Currency/CurrencyFormat";
 import axiosInstance from "../../API/axios";
 import { ClipLoader } from "react-spinners";
 import { db } from "../../Utility/firebase";
+import { doc, collection, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 function Payment() {
   const [cardError, setcardError] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate();
 
   const [{ user, basket }] = useContext(DataContext);
   const totalItem = basket?.reduce((amount, item) => {
@@ -48,9 +51,21 @@ function Payment() {
       console.log(paymentIntent);
 
       //step 3, if payment successfull , we need to store the order in database and clear the basket
-      // await db.collection("users").doc(user?.uid);
+      await setDoc(
+        doc(
+          collection(doc(collection(db, "users"), user.uid), "orders"),
+          paymentIntent.id
+        ),
+        {
+          basket: basket,
+          amount: paymentIntent.amount,
+          created: paymentIntent.created,
+        }
+      );
 
       setProcessing(false);
+      // back to orders page
+      navigate("/orders", { status: { msg: "You have new order!" } });
     } catch (error) {
       console.log(error);
       setProcessing(false);
