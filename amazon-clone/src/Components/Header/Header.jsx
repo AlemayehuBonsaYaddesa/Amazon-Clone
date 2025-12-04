@@ -8,12 +8,23 @@ import { SlLocationPin } from "react-icons/sl";
 import { BiCart } from "react-icons/bi";
 import { DataContext } from "../DataProvider/DataProvider";
 import { auth } from "../../Utility/firebase";
-
+import { signOut } from "firebase/auth";
+import { Type } from "../../Utility/action.type";
 function Header() {
   const [{ user, basket }, dispatch] = useContext(DataContext);
-  const totalItem = basket?.reduce((amount, item) => {
-    return item.amount + amount;
-  }, 0);
+  const totalItem =
+    basket?.reduce((amount, item) => item.amount + amount, 0) || 0;
+
+  const logoutHandler = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch({
+          type: Type.SET_USER,
+          user: null,
+        });
+      })
+      .catch((err) => console.log(err.message));
+  };
 
   return (
     <section className={classes.fixed}>
@@ -63,7 +74,7 @@ function Header() {
                 {user ? (
                   <>
                     <p>Hello, {user?.email?.split("@")[0]}</p>
-                    <span onClick={() => auth.signOut}>SignOut</span>
+                    <span onClick={logoutHandler}>SignOut</span>
                   </>
                 ) : (
                   <>

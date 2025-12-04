@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import classes from "./SignUp.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../Utility/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -17,6 +17,8 @@ function Auth() {
   const [loading, setLoading] = useState({ signIn: false, signUp: false });
   // console.log(email, password);
   const navigate = useNavigate();
+  const navStateData = useLocation();
+  // console.log(navStateData);
 
   const authHandler = (e) => {
     e.preventDefault();
@@ -32,7 +34,8 @@ function Auth() {
             user: userinfo.user,
           });
           setLoading({ ...loading, signIn: false });
-          navigate("/");
+
+          navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
           setError(err.message);
@@ -49,7 +52,7 @@ function Auth() {
             user: userinfo.user,
           });
           setLoading({ ...loading, signUp: false });
-          navigate("/");
+          navigate(navStateData?.state?.redirect || "/");
         })
         .catch((err) => {
           setError(err.message);
@@ -70,6 +73,9 @@ function Auth() {
       </Link>
       <div className={classes.container}>
         <h2>Sign In</h2>
+        <small style={{ color: "red", textAlign: "center" }}>
+          {navStateData ? navStateData?.state?.msg : ""}
+        </small>
         <form action="">
           <label htmlFor="email"> Email</label>
           <br />

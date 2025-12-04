@@ -34,7 +34,18 @@ function Router() {
             </ProtectedRoutes>
           }
         ></Route>
-        <Route path="/orders" element={<Orders />}></Route>
+
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoutes
+              msg="You need to login to your orders"
+              redirect="/orders"
+            >
+              <Orders />
+            </ProtectedRoutes>
+          }
+        ></Route>
         <Route path="/category/:categoryName" element={<Results />}></Route>
         <Route path="/products/:productId" element={<ProductDetail />}></Route>
         <Route path="/carts" element={<Cart />}></Route>

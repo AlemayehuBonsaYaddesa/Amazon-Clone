@@ -8,7 +8,7 @@ function ProtectedRoutes({ children, msg, redirect }) {
 
   useEffect(() => {
     if (!user) {
-      navigate("/auths", { state: { msg: redirect } });
+      navigate("/auths", { state: { msg, redirect } });
     }
   }, [user]);
   return children;
